@@ -10,6 +10,10 @@ class Server {
   constructor() {
     this.app = express();
     this.port = process.env.PORT;
+    this.paths = {
+      auth  : '/api/auth',
+      users : '/api/users'
+    };
 
     // Connect to database
     this._connectDB();
@@ -18,6 +22,7 @@ class Server {
     this._middlewares();
 
     // Paths
+    this._routes();
 
   }
 
@@ -34,6 +39,14 @@ class Server {
   _middlewares() {
     this.app.use(express.json());
     this.app.use(cors());
+  }
+
+  /**
+   * Method to define the API routes
+   */
+  _routes() {
+    this.app.use(this.paths.auth, require('../routes/auth.routes'));
+    this.app.use(this.paths.users, require('../routes/user.routes'));
   }
   
   /**

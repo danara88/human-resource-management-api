@@ -27,7 +27,7 @@ const UserSchema = new Schema({
     role: {
         type: String,
         required: [true, 'The role is required.'],
-        default: 'USER_ROLE',
+        default: 'EMPLOYEE_ROLE',
         enum: ['ADMIN_ROLE', 'TRAINNING_ROLE', 'EMPLOYEE_ROLE']
     },
     isActive: {
