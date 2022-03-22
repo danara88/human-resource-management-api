@@ -1,9 +1,10 @@
 require('colors');
 const express = require('express');
+const cors = require('cors');
 const { dbConnection } = require('../database/config');
 
 /**
- * Server class
+ * Server class to initialize the API
  */
 class Server {
   constructor() {
@@ -14,17 +15,33 @@ class Server {
     this._connectDB();
 
     // Middlewares
+    this._middlewares();
 
     // Paths
+
   }
 
+  /**
+   * Private method to connect database
+   */
   async _connectDB() {
     await dbConnection();
   }
 
+  /**
+   * Private method to add middlewares
+   */
+  _middlewares() {
+    this.app.use(express.json());
+    this.app.use(cors());
+  }
+  
+  /**
+   * Method to listen the port
+   */
   listen() {
     this.app.listen(this.port, () => {
-      console.log(`Server running at port ${this.port}`.yellow);
+      console.log(`Server running at port ${this.port}`.blue);
     });
   }
 }
