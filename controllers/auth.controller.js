@@ -14,7 +14,7 @@ const login = async (req, res) => {
     const query = {$or: [{email: emailOrUsername.toLowerCase()}, {username: emailOrUsername.toLowerCase()}]};
     const user = await User.findOne(query);
 
-    if (!user) return res.status(400).json({
+    if (!user || !user.isActive) return res.status(400).json({
         ok: false,
         message: 'Invalid credentials.'
     });
