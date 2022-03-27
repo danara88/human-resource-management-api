@@ -28,7 +28,7 @@ const validateJWT = async (req, res, next) => {
 
         next();
     } catch (error) {
-        return res.status(401).json({
+        res.status(401).json({
             ok: false,
             message: 'Invalid authentication token.'
         });
@@ -36,6 +36,40 @@ const validateJWT = async (req, res, next) => {
 
 }
 
+/**
+ * Method to validates if the user is an Admin
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+const validateADMIN_ROLE = async (req, res, next) => {
+
+    const { _id: uid } = req.user;
+
+    try {
+        const userDB = await User.findById(uid);
+
+        if (!userDB || !userDB.status) return res.status(400).json({
+            ok: false,
+            message: 'The user does not exists'
+        });
+
+        if (userDB.role !== 'ADMIN_ROLE') return res.status(403).json({
+            ok: false,
+            message: 'You are not allowed to perform this action.'
+        });
+
+        next();
+        
+    } catch (error) {
+        res.status(403).json({
+            ok: false,
+            message: 'You are not allowed to perform this action.'
+        });
+    }
+}
+
 module.exports = {
-    validateJWT
+    validateJWT,
+    validateADMIN_ROLE
 }
