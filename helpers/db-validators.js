@@ -31,9 +31,24 @@ const existsUser = async (id = '') => {
 
 }
 
+/**
+ * Validates the collection
+ * @param {*} collection 
+ * @param {*} collections 
+ * @returns 
+ */
+const validCollections = (collection = '', collections = []) => {
+    const includeCollection = collections.includes(collection);
+    if ( !includeCollection ) {
+      throw new Error(`The collection ${collection} is not allowed.`);
+    }
+    return true;
+  };
+
 
 module.exports = {
     existsEmailUser,
     existsUsername,
-    existsUser
+    existsUser,
+    validCollections,
 }

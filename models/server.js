@@ -1,6 +1,7 @@
 require('colors');
 const express = require('express');
 const cors = require('cors');
+const fileUpload = require('express-fileupload');
 const { dbConnection } = require('../database/config');
 
 /**
@@ -11,8 +12,9 @@ class Server {
     this.app = express();
     this.port = process.env.PORT;
     this.paths = {
-      auth  : '/api/auth',
-      users : '/api/users'
+      auth   : '/api/auth',
+      users  : '/api/users',
+      uplaods: '/api/uploads'
     };
 
     // Connect to database
@@ -39,6 +41,11 @@ class Server {
   _middlewares() {
     this.app.use(express.json());
     this.app.use(cors());
+    this.app.use(fileUpload({
+      useTempFiles    : true,
+      tempFileDir     : '/tmp/',
+      createParentPath: true
+    }));
   }
 
   /**
@@ -47,6 +54,7 @@ class Server {
   _routes() {
     this.app.use(this.paths.auth, require('../routes/auth.routes'));
     this.app.use(this.paths.users, require('../routes/user.routes'));
+    this.app.use(this.paths.uplaods, require('../routes/uploads.routes'));
   }
   
   /**
