@@ -3,12 +3,14 @@ const { check } = require('express-validator');
 
 const { createUser, deleteUser, getUsers, updateUser } = require('../controllers');
 const { validateFields, validateJWT, validateADMIN_ROLE, validateADMIN_ROLE_or_SameUser } = require('../middlewares');
-const { passwordValidator, usernameValidator, existsEmailUser, existsUsername, existsUser } = require('../helpers');
+const { passwordValidator, existsEmailUser, existsUsername, existsUser } = require('../helpers');
 
 const api = Router();
 
 api.post('/', 
 [
+    validateJWT,
+    validateADMIN_ROLE,
     check('name', 'The name is required.').not().isEmpty(),
     check('surname', 'The surname is required.').not().isEmpty(),
     check('email', 'The email is required.').not().isEmpty(),
