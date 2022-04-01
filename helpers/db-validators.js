@@ -5,19 +5,19 @@ const User = require('../models/user');
  * Validate if the user email is not registered yet
  */
 const existsEmailUser = async (email = '') => {
-    email = email.toLowerCase();
-    const user = await User.findOne({ email });
-    if (user) throw new Error(`The email ${ email } is already registered.`);
+  email = email.toLowerCase();
+  const user = await User.findOne({ email });
+  if (user) throw new Error(`The email ${ email } is already registered.`);
 }
 
 /**
  * Validate if the user email is not registered yet
  */
  const existsUsername = async (username = '') => {
-    username = username.toLowerCase();
-    const user = await User.findOne({ username });
-    if (user) 
-        throw new Error(`The username ${ username } is already registered.`);
+  username = username.toLowerCase();
+  const user = await User.findOne({ username });
+  if (user) 
+      throw new Error(`The username ${ username } is already registered.`);
 }
 
 /**
@@ -25,9 +25,9 @@ const existsEmailUser = async (email = '') => {
  * @param {*} id 
  */
 const existsUser = async (id = '') => {
-    const user = await User.findById(id);
-    if (!user || !user.isActive) 
-        throw new Error(`The user with ID ${ id } does not exist.`);
+  const user = await User.findById(id);
+  if (!user || !user.isActive) 
+      throw new Error(`The user with ID ${ id } does not exist.`);
 
 }
 
@@ -38,12 +38,26 @@ const existsUser = async (id = '') => {
  * @returns 
  */
 const validCollections = (collection = '', collections = []) => {
-    const includeCollection = collections.includes(collection);
-    if ( !includeCollection ) {
-      throw new Error(`The collection ${collection} is not allowed.`);
-    }
-    return true;
-  };
+  const includeCollection = collections.includes(collection);
+  if ( !includeCollection ) {
+    throw new Error(`The collection ${collection} is not allowed.`);
+  }
+  return true;
+};
+
+/**
+ * Method to validate if the role exists
+ * @param {*} role 
+ * @param {*} roles 
+ * @returns 
+ */
+const validRoles = (role = '', roles = []) => {
+  const includeRole = roles.includes(role);
+  if ( !includeRole ) {
+    throw new Error(`The role ${role} is not valid.`);
+  }
+  return true;
+}
 
 
 module.exports = {
@@ -51,4 +65,5 @@ module.exports = {
     existsUsername,
     existsUser,
     validCollections,
+    validRoles,
 }

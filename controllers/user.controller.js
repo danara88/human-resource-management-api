@@ -94,6 +94,29 @@ const updateUser = async (req, res) => {
 }
 
 /**
+ * Method to update user's role
+ * @param {*} req 
+ * @param {*} res 
+ */
+const changeUserRole = async (req, res) => {
+    const { id } = req.params;
+    const { role } = req.body;
+
+    try {
+        const user = await User.findByIdAndUpdate(id, { role }, { new: true });
+        res.status(200).json({
+            ok: true,
+            user
+        });
+    } catch (error) {
+        res.status(500).json({
+            ok: false,
+            message: 'Something went wrong.'
+        });
+    }
+}
+
+/**
  * Method to delete a user
  * @param {*} req 
  * @param {*} res 
@@ -120,5 +143,6 @@ module.exports = {
     createUser,
     getUsers,
     deleteUser,
-    updateUser
+    updateUser,
+    changeUserRole
 }

@@ -1,9 +1,9 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 
-const { createUser, deleteUser, getUsers, updateUser } = require('../controllers');
+const { createUser, deleteUser, getUsers, updateUser, changeUserRole } = require('../controllers');
 const { validateFields, validateJWT, validateADMIN_ROLE, validateADMIN_ROLE_or_SameUser } = require('../middlewares');
-const { passwordValidator, existsEmailUser, existsUsername, existsUser } = require('../helpers');
+const { passwordValidator, existsEmailUser, existsUsername, existsUser, validRoles } = require('../helpers');
 
 const api = Router();
 
@@ -23,6 +23,7 @@ api.post('/',
     validateFields
 ], createUser);
 
+
 api.get('/',
 [
     validateJWT,
@@ -40,6 +41,16 @@ api.put('/:id', [
     check('email', 'The email is not valid').isEmail(),
     validateFields
 ], updateUser);
+
+api.put('/change-role/:id', [
+    validateJWT,
+    validateADMIN_ROLE,
+    check('id', 'Invalid ID').isMongoId(),
+    check('id').custom( existsUser ),
+    check('role', 'The role is required').not().isEmpty(),
+    check('role').custom(role => validRoles(role, ['ADMIN_ROLE', 'TRAINNING_ROLE', 'EMPLOYEE_ROLE'])),
+    validateFields
+], changeUserRole);
 
 api.delete('/:id',
 [
