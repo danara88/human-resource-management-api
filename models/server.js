@@ -12,9 +12,10 @@ class Server {
     this.app = express();
     this.port = process.env.PORT;
     this.paths = {
-      auth   : '/api/auth',
-      users  : '/api/users',
-      uplaods: '/api/uploads'
+      auth     : '/api/auth',
+      users    : '/api/users',
+      uplaods  : '/api/uploads',
+      positions: '/api/positions'
     };
 
     // Connect to database
@@ -55,6 +56,7 @@ class Server {
     this.app.use(this.paths.auth, require('../routes/auth.routes'));
     this.app.use(this.paths.users, require('../routes/user.routes'));
     this.app.use(this.paths.uplaods, require('../routes/uploads.routes'));
+    this.app.use(this.paths.positions, require('../routes/position.routes'));
   }
   
   /**

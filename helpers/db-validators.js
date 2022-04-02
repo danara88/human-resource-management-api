@@ -1,5 +1,5 @@
-const res = require('express/lib/response');
 const User = require('../models/user');
+const Position = require('../models/position');
 
 /**
  * Validate if the user email is not registered yet
@@ -28,6 +28,17 @@ const existsUser = async (id = '') => {
   const user = await User.findById(id);
   if (!user || !user.isActive) 
       throw new Error(`The user with ID ${ id } does not exist.`);
+
+}
+
+/**
+ * Validates if the position exists
+ * @param {*} id 
+ */
+const existsPosition = async (id = '') => {
+  const position = await Position.findById(id);
+  if (!position || !position.isActive) 
+      throw new Error(`The position with ID ${ id } does not exist.`);
 
 }
 
@@ -64,6 +75,7 @@ module.exports = {
     existsEmailUser,
     existsUsername,
     existsUser,
+    existsPosition,
     validCollections,
     validRoles,
 }

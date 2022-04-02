@@ -1,7 +1,7 @@
 const moment = require('moment');
 const { Schema, model } = require('mongoose');
 
-const PositionSchema = new Schema({
+const PositionSchema = Schema({
     title: {
         type: String,
         required: [true, 'The title is required.']
