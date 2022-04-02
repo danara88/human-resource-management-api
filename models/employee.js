@@ -1,7 +1,7 @@
 const moment = require('moment');
 const { Schema, model } = require('mongoose');
 
-const EmployeeSchema = new Schema({
+const EmployeeSchema = Schema({
     position: {
         type: Schema.Types.ObjectId,
         ref: 'Position',

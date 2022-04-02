@@ -1,3 +1,4 @@
+const moment = require('moment');
 const bcryptjs = require('bcryptjs');
 const User = require('../models/user');
 
@@ -48,6 +49,21 @@ const getUsers = async (req, res) => {
 }
 
 /**
+ * Method to get user details
+ * @param {*} req 
+ * @param {*} res 
+ */
+const getUser = async (req, res) => {
+    const { id } = req.params;
+    const user = await User.findById(id);
+    
+    res.json({
+        ok: true,
+        user
+    });
+}
+
+/**
  * Method to update user profile data
  * @param {*} req 
  * @param {*} res 
@@ -76,6 +92,7 @@ const updateUser = async (req, res) => {
             }
             data.email = email;
         }
+        data.updatedAt = moment().unix();
 
         const user = await User.findByIdAndUpdate(id, data, {new: true});
 
@@ -142,6 +159,7 @@ const deleteUser = async (req, res) => {
 module.exports = {
     createUser,
     getUsers,
+    getUser,
     deleteUser,
     updateUser,
     changeUserRole

@@ -1,14 +1,13 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 
-const { createUser, deleteUser, getUsers, updateUser, changeUserRole } = require('../controllers');
+const { createUser, deleteUser, getUsers, updateUser, changeUserRole, getUser } = require('../controllers');
 const { validateFields, validateJWT, validateADMIN_ROLE, validateADMIN_ROLE_or_SameUser } = require('../middlewares');
 const { passwordValidator, existsEmailUser, existsUsername, existsUser, validRoles } = require('../helpers');
 
 const api = Router();
 
-api.post('/', 
-[
+api.post('/', [
     validateJWT,
     validateADMIN_ROLE,
     check('name', 'The name is required.').not().isEmpty(),
@@ -24,11 +23,18 @@ api.post('/',
 ], createUser);
 
 
-api.get('/',
-[
+api.get('/', [
     validateJWT,
     validateADMIN_ROLE
 ], getUsers);
+
+api.get('/:id', [
+    validateJWT,
+    validateADMIN_ROLE_or_SameUser,
+    check('id', 'Invalid ID').isMongoId(),
+    check('id').custom( existsUser ),
+    validateFields
+], getUser);
 
 api.put('/:id', [
     validateJWT,

@@ -1,4 +1,4 @@
-const bcryotjs = require('bcryptjs');
+const bcryptjs = require('bcryptjs');
 const { generateJWT } = require('../helpers');
 const User = require('../models/user');
 
@@ -19,7 +19,7 @@ const login = async (req, res) => {
         message: 'Invalid credentials.'
     });
 
-    const comaparePassword = bcryotjs.compareSync(password, user.password);
+    const comaparePassword = bcryptjs.compareSync(password, user.password);
     if (!comaparePassword) return res.status(400).json({
         ok: false,
         message: 'Invalid credentials.'
